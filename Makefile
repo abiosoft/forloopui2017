@@ -1,10 +1,13 @@
 TAG = $(shell git rev-parse --short HEAD)
 PROJECT = forloop-162523
 
-build:
+appbuild:
 	GOOS=linux go build -o app
 
-all: build
-	docker build -t us.grc.io/$(PROJECT)/guestbook:$(TAG)
-	gcloud docker -- push us.grc.io/$(PROJECT)/guestbook:$(TAG)
+docker:
+	docker build -t us.gcr.io/$(PROJECT)/guestbook:$(TAG) .
 
+gcloud:
+	gcloud docker -- push us.gcr.io/$(PROJECT)/guestbook:$(TAG)
+
+all: appbuild docker gcloud
